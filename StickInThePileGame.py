@@ -4,40 +4,46 @@ Stick Game
 Tanat Piumsuwan 660631098
 """
 import random
+import numpy as np
 
 
 sticks = int(input("How many sticks (N) in the pile:"))             #ask for number of sticks in the pile
-print("There are {} sticks in the pile.".format(sticks))
+print("There are {} sticks in the pile.".format(sticks))            
 name = input("What is your name:")                                  #ask for user's name
-i = 0
-j = 0
-while sticks > 0:
-#until there are no stick left
-    pick = int(input("{}, how many sticks you will take (1 or 2):".format(name)))  
-    #input for number of sticks the user want
-    if pick > 2:
-    #invalid number of pick (take more than 2), warn the user
-        print("No, you cannot take more than 2 stick!")
-    elif sticks - pick < 0:
-    #invalid number of pick (take more than available sticks), warn the user
-        print("There are not enough stick to take.")
-    elif pick < 1:
-    #invalid number of pick (take less than 2), warn the user
-        print("No, you cannot take less than 1 stick!")
-    else:
-    #Valid pick, count attemp and get leftover sticks
-        sticks -= pick
-        i += 1
-    print("There are {} sticks in the pile.".format(sticks))
+counts = np.zeros(2, dtype=int)                                     #2 players for now
+
+def playerplay(name,i):
+    #What to do when a participant about to pick sticks
+    global sticks,counts
+    while True:
+        pick = int(input("{}, how many sticks you will take (1 or 2):".format(name)))  
+        #input for number of sticks the user want
+        if pick > 2:
+        #invalid number of pick (take more than 2), warn the user
+            print("No, you cannot take more than 2 stick!")
+        elif sticks - pick < 0:
+        #invalid number of pick (take more than available sticks), warn the user
+            print("There are not enough stick to take.")
+        elif pick < 1:
+        #invalid number of pick (take less than 2), warn the user
+            print("No, you cannot take less than 1 stick!")
+        else:
+        #Valid pick, count attemp and get leftover sticks
+            sticks -= pick
+            counts[i] += 1
+            break
+    print(f"There are {sticks} sticks in the pile.")
     
+def botplay(name,i):
     #I choose smart player 2 (may improve in the future or add stochastic property to its decision making)
+    global sticks,playerpicked,counts
     if sticks == 0:
     #Make sure that if there are 0 sticks, the player 2 doesn't pick and win 
         playerpicked = True
-        print("The player 2 did not picked any from the pile.")
+        print("The {} did not picked any from the pile.".format(name))
     else:
         playerpicked = False
-        j += 1
+        counts[i] += 1
         if sticks > 4:
             pick = 2
             sticks -= pick
@@ -52,10 +58,18 @@ while sticks > 0:
         elif sticks < 3:
             pick = 1
             sticks -= pick
-        print("The player 2 picked {} from the pile.".format(pick))
+        print(f"The player 2 picked {pick} from the pile.")
+    
+
+while sticks > 0:
+#until there are no stick left
+    playerplay(name,0)
+    botplay("player 2",1)
+    
+
         
     print("There are {} sticks in the pile.".format(sticks))  
-print("Ok, there is no stick left in the pile. You spent {0} times, the player 2 spent {1} times.".format(i,j))
+print("Ok, there is no stick left in the pile. You spent {0} times, the player 2 spent {1} times.".format(counts[0],counts[1]))
 if playerpicked:
     print("You took the last stick, you lose.")
 else:
