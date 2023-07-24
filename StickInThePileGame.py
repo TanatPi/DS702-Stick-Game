@@ -36,7 +36,7 @@ def playerplay(name,i):
         #input for number of sticks the user want
         if pick > maxpick:
         #invalid number of pick (take more than 2), warn the user
-            print("No, you cannot take more than 2 stick!")
+            print(f"No, you cannot take more than {maxpick} stick!")
         elif sticks - pick < 0:
         #invalid number of pick (take more than available sticks), warn the user
             print("There are not enough stick to take.")
