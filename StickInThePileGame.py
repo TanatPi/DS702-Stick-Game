@@ -13,7 +13,7 @@ if playercanchoose:
     sticks = int(input("How many sticks (N) in the pile:"))         #ask for number of sticks in the pile
 else:
     #Fix the number of starting sticks
-    sticks = 19
+    sticks = 20
 
 maxpick = 2                                                         #Max number of sticks I can pick
 
@@ -59,27 +59,29 @@ def botpick(sticks):
     elif sticks % (maxpick+1) != 1:
     #just give the player the losing scenario
         pick = (sticks % (maxpick+1)) - 1
-    else:
+    elif sticks != 1:
     #losing scenario, all the bot can do is to random how many sticks it can pick and hope that the player is stupid
         pick = random.choice(np.arange(1,maxpick+1,1))
+    else:
+    #sticks = 1 the bot is definitely losing
+        pick = 1
     return pick
 
 def botplay(i):
-    #I choose smart player 2 (may improve in the future or add stochastic property to its decision making)
+    #Smart bot governed by modular
     global sticks,counts,playerpicked
-    if sticks == 0:
-    #Make sure that if there are 0 sticks, the player 2 doesn't pick and win 
-        playerpicked = False
-        print("I did not picked any from the pile.")
-    else:
-        pick = botpick(sticks)
-        picking(pick,i)
-        print(f"I take {pick} stick(s), there are {sticks} sticks in the pile.")
+    playerpicked = False
+    pick = botpick(sticks)
+    picking(pick,i)
+    print(f"I take {pick} stick(s), there are {sticks} sticks in the pile.")
     
 
 while sticks > 0:
 #until there are no stick left
     botplay(1) 
+    if sticks < 1:
+    #In case the bot pick the last stick and lose
+        break
     playerplay(name,0)
     
     
