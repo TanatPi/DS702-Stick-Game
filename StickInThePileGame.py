@@ -53,18 +53,13 @@ def playerplay(name,i):
 def botpick(sticks):
     #How many sticks the bot should pick, it should prioritize giving player the losing scenario
     #The losing scenario is when, in our turn, the number of stick mod maxpick+1 is 1
-    if sticks % (maxpick+1) == 0:
-    #In this case, pick = maxpick gives the player a losing scenario
-        pick = maxpick
-    elif sticks % (maxpick+1) != 1:
+    if (sticks-1) % (maxpick+1) != 0:
     #just give the player the losing scenario
-        pick = (sticks % (maxpick+1)) - 1
-    elif sticks != 1:
-    #losing scenario, all the bot can do is to random how many sticks it can pick and hope that the player is stupid
-        pick = random.choice(np.arange(1,maxpick+1,1))
+        pick = (sticks-1) % (maxpick+1)
     else:
-    #sticks = 1 the bot is definitely losing
-        pick = 1
+    #losing scenario, all the bot can do is to random how many sticks it can pick and hope that the player is stupid
+    #sticks = 1 the bot is definitely losing (check by min(maxpick,sticks))
+        pick = random.randint(1,min(maxpick,sticks))
     return pick
 
 def botplay(i):
