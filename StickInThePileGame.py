@@ -30,7 +30,7 @@ def picking(pick,i):
     
 def playerplay(name,i):
     #What to do when a participant about to pick sticks
-    global sticks,counts,playerpicked
+    global playerpicked
     while True:
         pick = int(input(f"{name}, how many sticks you will take:"))  
         #input for number of sticks the user want
@@ -69,7 +69,7 @@ def botpick(sticks):
 
 def botplay(i):
     #Smart bot governed by modular
-    global sticks,counts,playerpicked
+    global playerpicked
     playerpicked = False
     pick = botpick(sticks)
     picking(pick,i)
